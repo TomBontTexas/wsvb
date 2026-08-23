@@ -1,0 +1,927 @@
+:root {
+  --bg: #05070c;
+  --bg-panel: #0d1420;
+  --bg-panel-alt: #131c2b;
+  --border: #253449;
+  --border-soft: #25344980;
+  --text: #eaf2ff;
+  --text-dim: #7e93ad;
+
+  --blue: #7d93ff;
+  --blue-strong: #aebaff;
+  --blue-dim: rgba(125, 147, 255, 0.16);
+
+  --amber: #ffab4a;
+  --amber-strong: #ffc482;
+  --amber-dim: rgba(255, 171, 74, 0.16);
+
+  --accent: var(--blue);
+  --accent-strong: var(--blue-strong);
+  --accent-dim: var(--blue-dim);
+  --accent-glow: rgba(125, 147, 255, 0.4);
+
+  --warn: var(--amber);
+  --warn-dim: var(--amber-dim);
+  --danger: #ff6b6b;
+  --danger-dim: rgba(255, 107, 107, 0.18);
+  --positive: #5be0a0;
+
+  --ink: #0a0e16;
+  --radius: 16px;
+  --radius-pill: 999px;
+  --font-display: "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 14px;
+}
+
+body {
+  background-image:
+    radial-gradient(ellipse at 12% 92%, rgba(150, 90, 255, 0.07), transparent 50%),
+    radial-gradient(ellipse at top, rgba(125, 147, 255, 0.09), transparent 55%),
+    radial-gradient(1.5px 1.5px at 20px 30px, #cdefff, transparent),
+    radial-gradient(1px 1px at 60px 90px, #cdefff, transparent),
+    radial-gradient(1px 1px at 130px 40px, rgba(205, 239, 255, 0.7), transparent),
+    radial-gradient(2px 2px at 170px 120px, #cdefff, transparent),
+    radial-gradient(1px 1px at 40px 160px, rgba(205, 239, 255, 0.6), transparent),
+    radial-gradient(1.5px 1.5px at 190px 20px, #cdefff, transparent),
+    radial-gradient(1px 1px at 95px 190px, rgba(205, 239, 255, 0.5), transparent),
+    radial-gradient(1px 1px at 10px 115px, #cdefff, transparent),
+    radial-gradient(2px 2px at 150px 175px, rgba(205, 239, 255, 0.8), transparent),
+    radial-gradient(1px 1px at 205px 205px, #cdefff, transparent),
+    radial-gradient(1px 1px at 110px 10px, rgba(205, 239, 255, 0.6), transparent),
+    radial-gradient(1.5px 1.5px at 5px 200px, #cdefff, transparent);
+  background-repeat:
+    no-repeat, no-repeat,
+    repeat, repeat, repeat, repeat, repeat, repeat, repeat, repeat, repeat, repeat, repeat, repeat;
+  background-size:
+    100% 100%, 100% 100%,
+    220px 220px, 220px 220px, 220px 220px, 220px 220px, 220px 220px, 220px 220px,
+    220px 220px, 220px 220px, 220px 220px, 220px 220px, 220px 220px, 220px 220px;
+  background-attachment: fixed;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* ---------------- Toolbar ---------------- */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 20px;
+  background: linear-gradient(180deg, var(--bg-panel), #080d16);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+  flex-shrink: 0;
+}
+
+.toolbar-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.logo-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+}
+
+.logo-ring {
+  position: absolute;
+  inset: -3px;
+  border: 2px solid var(--amber);
+  border-top-color: transparent;
+  border-radius: 50%;
+  opacity: 0.7;
+  animation: logo-spin 5s linear infinite;
+}
+
+@keyframes logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.logo-icon {
+  position: relative;
+  fill: var(--amber-dim);
+  stroke: var(--amber-strong);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 4px rgba(255, 171, 74, 0.4));
+  flex-shrink: 0;
+}
+
+/* Shared icon styling for buttons/tabs */
+.icon {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  flex-shrink: 0;
+  vertical-align: -2px;
+}
+
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.toolbar-spacer { flex: 1; }
+
+.autosave-status {
+  font-family: var(--font-display);
+  color: var(--text-dim);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  min-width: 190px;
+  text-align: right;
+}
+
+button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-panel-alt);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 7px 16px;
+  font-size: 12px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+}
+button:hover {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: var(--ink);
+  box-shadow: 0 0 18px var(--accent-glow);
+}
+button:active { transform: scale(0.96); }
+button.primary { background: var(--blue); border-color: var(--blue); color: var(--ink); }
+button.danger:hover { background: var(--danger); border-color: var(--danger); color: var(--ink); box-shadow: 0 0 18px rgba(255, 107, 107, 0.4); }
+
+/* ---------------- Main layout ---------------- */
+.main-layout {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  gap: 14px;
+  padding: 14px;
+}
+
+.sidebar {
+  position: relative;
+  width: 250px;
+  flex-shrink: 0;
+  background: linear-gradient(160deg, var(--bg-panel), #0a121f);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  padding: 18px 16px;
+  overflow-y: auto;
+}
+
+.sidebar h2, .summary-panel h2 {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  background: var(--blue);
+  padding: 5px 14px;
+  border-radius: var(--radius-pill);
+  margin: 0 0 14px;
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+
+.vehicle-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.vehicle-list li {
+  position: relative;
+  padding: 10px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-bottom: 6px;
+  font-size: 13px;
+  line-height: 1.3;
+  border: 1px solid transparent;
+  word-break: break-word;
+  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.vehicle-list li:hover { background: var(--bg-panel-alt); }
+.vehicle-list li.selected {
+  background: var(--blue-dim);
+  border-color: var(--blue);
+  box-shadow: 0 0 14px var(--accent-glow);
+}
+.vehicle-list li .dirty-dot {
+  color: var(--amber);
+  margin-left: 4px;
+  animation: blip 1.4s ease-in-out infinite;
+  display: inline-block;
+}
+
+.vehicle-list-line1 {
+  font-weight: 600;
+  color: var(--text);
+}
+.vehicle-list-line2 {
+  color: var(--text-dim);
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+@keyframes blip {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.editor {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  padding: 22px 26px;
+  background: rgba(11, 17, 27, 0.55);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
+
+.empty-state:not([hidden]) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-dim);
+  gap: 4px;
+  text-align: center;
+  font-family: var(--font-display);
+}
+
+.empty-state p { margin: 0; }
+.empty-state-hint { font-size: 13px; }
+.empty-state-hint strong { color: var(--accent); }
+
+/* ---------------- Holographic gyroscope core (empty state) ---------------- */
+.hologram {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin: 0 auto 16px;
+  perspective: 700px;
+}
+
+.holo-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 46px;
+  height: 46px;
+  margin: -23px 0 0 -23px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--blue-strong), var(--blue) 55%, #2a3a7a 100%);
+  box-shadow: 0 0 30px 10px var(--accent-glow), inset -4px -4px 10px rgba(0, 0, 0, 0.35);
+  animation: blip 2.4s ease-in-out infinite;
+}
+
+.holo-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150px;
+  height: 150px;
+  margin: -75px 0 0 -75px;
+  border-radius: 50%;
+  border: 4px solid var(--blue);
+  box-shadow: 0 0 20px var(--accent-glow);
+  opacity: 0.65;
+}
+.holo-ring-1 { animation: holo-spin-1 6s linear infinite; }
+.holo-ring-2 {
+  width: 190px; height: 190px; margin: -95px 0 0 -95px;
+  border-color: var(--amber);
+  opacity: 0.5;
+  box-shadow: 0 0 20px rgba(255, 171, 74, 0.4);
+  animation: holo-spin-2 9s linear infinite;
+}
+.holo-ring-3 {
+  width: 110px; height: 110px; margin: -55px 0 0 -55px;
+  border-color: var(--blue-strong);
+  opacity: 0.55;
+  animation: holo-spin-3 4.5s linear infinite;
+}
+
+@keyframes holo-spin-1 {
+  from { transform: rotateX(72deg) rotateZ(0deg); }
+  to { transform: rotateX(72deg) rotateZ(360deg); }
+}
+@keyframes holo-spin-2 {
+  from { transform: rotateX(72deg) rotateY(20deg) rotateZ(60deg); }
+  to { transform: rotateX(72deg) rotateY(20deg) rotateZ(-300deg); }
+}
+@keyframes holo-spin-3 {
+  from { transform: rotateY(75deg) rotateZ(30deg); }
+  to { transform: rotateY(75deg) rotateZ(390deg); }
+}
+
+.summary-panel {
+  position: relative;
+  width: 330px;
+  flex-shrink: 0;
+  background: linear-gradient(200deg, var(--bg-panel), #0a121f);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  padding: 18px 16px;
+  overflow-y: auto;
+}
+
+/* ---------------- Tabs ---------------- */
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  background: var(--bg-panel-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 8px 16px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-dim);
+}
+
+.tab-btn:hover { background: var(--bg-panel); color: var(--text); box-shadow: none; }
+.tab-btn.active {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: var(--ink);
+  animation: tab-pulse 2.6s ease-in-out infinite;
+}
+
+@keyframes tab-pulse {
+  0%, 100% { box-shadow: 0 0 10px var(--accent-glow); }
+  50% { box-shadow: 0 0 20px var(--accent-glow); }
+}
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+h3 {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink);
+  background: var(--amber);
+  padding: 5px 14px;
+  border-radius: var(--radius-pill);
+  margin: 0 0 14px;
+  box-shadow: 0 0 12px rgba(255, 171, 74, 0.3);
+}
+
+/* ---------------- Forms ---------------- */
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px 16px;
+  margin-bottom: 14px;
+}
+
+/* Bottom-align each field so a label that wraps to two lines (e.g. "Environmental
+   Interface (Secondary)") doesn't push its input out of line with its neighbors.
+   Skipped on the grid holding .field-stack (Tier/Actual Max Tons), which is taller
+   than a normal field and shouldn't be squashed to the row's bottom edge. */
+.field-grid:not(:has(.field-stack)) {
+  align-items: end;
+}
+
+.field-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-dim);
+}
+
+.checkbox-label {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--text);
+}
+
+input, select, textarea {
+  background: var(--bg-panel-alt);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 7px 10px;
+  font-size: 13px;
+  font-family: var(--font-display);
+}
+input[type="number"] { font-family: var(--font-mono); font-weight: 600; }
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent), 0 0 10px var(--accent-glow);
+}
+
+input[type="number"] { width: 100%; }
+
+/* Hide native number spinners - our own spin buttons replace them everywhere,
+   since iOS Safari never renders native ones and desktop's are inconsistent. */
+input[type="number"] { -moz-appearance: textfield; }
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.spinner-wrap {
+  display: inline-flex;
+  align-items: stretch;
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background: var(--bg-panel-alt);
+  overflow: hidden;
+}
+.spinner-wrap input[type="number"] {
+  flex: 1;
+  min-width: 0;
+  width: auto;
+  text-align: center;
+  border: none;
+  background: transparent;
+  border-radius: 0;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+.spinner-wrap:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+.spinner-wrap:focus-within input[type="number"] { box-shadow: none; }
+.spin-btn {
+  flex-shrink: 0;
+  width: 32px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1;
+  color: var(--text-dim);
+  box-shadow: none;
+}
+.spin-btn:hover { color: var(--blue-strong); background: var(--blue-dim); box-shadow: none; }
+.spin-btn:active { transform: none; }
+
+.input-with-button {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.input-with-button .spinner-wrap { width: 100%; }
+.input-with-button button:not(.spin-btn) { width: 100%; font-size: 11px; padding: 7px 8px; justify-content: center; }
+
+.readout-row {
+  display: flex;
+  gap: 24px;
+  font-family: var(--font-mono);
+  color: var(--text-dim);
+  font-size: 12.5px;
+  margin-bottom: 16px;
+}
+
+fieldset {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 16px 16px;
+  margin: 0 0 16px;
+  background: var(--bg-panel-alt);
+}
+
+legend {
+  padding: 4px 14px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  color: var(--ink);
+  background: var(--blue);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.weapons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.weapon-col h4 {
+  display: inline-block;
+  margin: 0 0 10px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--blue-strong);
+  padding-bottom: 4px;
+  border-bottom: 3px solid var(--blue);
+}
+
+.weapon-col select { width: 100%; margin-bottom: 8px; }
+.weapon-col label { flex-direction: row; align-items: center; gap: 6px; margin-bottom: 8px; }
+.weapon-col label .spinner-wrap { width: 100px; }
+
+.weapon-readout {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+textarea {
+  width: 100%;
+  resize: vertical;
+  font-family: var(--font-display);
+}
+
+/* ---------------- Feature table ---------------- */
+.feature-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  font-size: 13px;
+}
+
+/* Fixed column widths so the table doesn't reflow between vehicles just
+   because one has longer Notes text or more digits in Mk/Cost/Tons. */
+.feature-table th:nth-child(1), .feature-table td:nth-child(1) { width: 22%; }
+.feature-table th:nth-child(2), .feature-table td:nth-child(2) { width: 13%; text-align: center; }
+.feature-table th:nth-child(3), .feature-table td:nth-child(3) { width: 13%; text-align: center; }
+.feature-table th:nth-child(4), .feature-table td:nth-child(4) { width: 9%; }
+.feature-table th:nth-child(5), .feature-table td:nth-child(5) { width: 9%; }
+.feature-table th:nth-child(6), .feature-table td:nth-child(6) { width: 10%; }
+.feature-table th:nth-child(7), .feature-table td:nth-child(7) { width: 24%; }
+
+.feature-table th {
+  text-align: left;
+  font-family: var(--font-display);
+  color: var(--blue-strong);
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 8px;
+  border-bottom: 2px solid var(--border);
+}
+
+.feature-table th.col-readonly {
+  text-align: right;
+}
+
+.feature-table td {
+  padding: 7px 8px;
+  border-bottom: 1px solid var(--border-soft);
+  vertical-align: middle;
+  overflow-wrap: break-word;
+}
+
+.feature-table .spinner-wrap {
+  width: 92px;
+}
+.feature-table .spin-btn {
+  width: 24px;
+  font-size: 14px;
+}
+
+.feature-table .feature-name { font-weight: 600; }
+.feature-table .feature-notes { color: var(--text-dim); font-size: 12px; font-family: var(--font-display); }
+.feature-table .readonly-cell { color: var(--text); font-family: var(--font-mono); font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
+
+/* ---------------- Traits / Boutique pickers ---------------- */
+.picker-columns {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.picker-col {
+  flex: 1;
+  min-width: 260px;
+}
+
+.listbox {
+  position: relative;
+  width: 100%;
+  height: 320px;
+  overflow-y: auto;
+  background: var(--bg-panel-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.listbox:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
+
+.listbox-empty {
+  padding: 10px;
+  color: var(--text-dim);
+  font-size: 13px;
+  font-style: italic;
+}
+
+/* ---------------- Sortable Traits / Boutique Services repository tables ---------------- */
+.trait-repo-wrap, .boutique-repo-wrap {
+  padding: 0 6px;
+}
+.trait-repo-table, .boutique-repo-table {
+  width: 100%;
+  margin-bottom: 0;
+  table-layout: fixed;
+}
+.trait-repo-table th:nth-child(1), .trait-repo-table td:nth-child(1) { width: 40%; }
+.trait-repo-table th:nth-child(2), .trait-repo-table td:nth-child(2) { width: 40%; }
+.trait-repo-table th:nth-child(3), .trait-repo-table td:nth-child(3) { width: 20%; text-align: right; }
+
+.boutique-repo-table th:nth-child(1), .boutique-repo-table td:nth-child(1) { width: 75%; }
+.boutique-repo-table th:nth-child(2), .boutique-repo-table td:nth-child(2) { width: 25%; text-align: right; }
+
+.trait-repo-table thead th, .boutique-repo-table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--bg-panel-alt);
+  z-index: 1;
+  cursor: pointer;
+  user-select: none;
+}
+.trait-repo-table thead th.sortable:hover, .boutique-repo-table thead th.sortable:hover { color: var(--blue-strong); }
+
+.trait-repo-table td, .boutique-repo-table td {
+  font-size: 12.5px;
+  overflow-wrap: break-word;
+}
+
+.repo-row { cursor: pointer; }
+.repo-row:hover td { background: var(--bg-panel); }
+.repo-row.selected td {
+  background: var(--blue-dim);
+  color: var(--accent-strong);
+}
+.repo-row.selected td:first-child { box-shadow: inset 2px 0 0 var(--blue); }
+.repo-row-owned td { color: var(--text-dim); font-style: italic; }
+.repo-row-owned.selected td { color: var(--accent-strong); }
+
+.picker-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.picker-controls label {
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}
+.picker-controls label .spinner-wrap { width: 100px; }
+
+.info-box {
+  margin-top: 16px;
+  padding: 14px;
+  background: var(--bg-panel-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-family: var(--font-display);
+  font-size: 12.5px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  min-height: 60px;
+}
+
+/* ---------------- Summary panel ---------------- */
+.summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  margin-bottom: 20px;
+}
+
+.summary-table th {
+  text-align: right;
+  font-family: var(--font-display);
+  color: var(--blue-strong);
+  font-weight: 700;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 4px;
+  border-bottom: 2px solid var(--border);
+}
+.summary-table th:first-child { text-align: left; }
+
+.summary-table td {
+  padding: 6px 4px;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.summary-table td:nth-child(2),
+.summary-table td:nth-child(3) {
+  text-align: right;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  width: 52px;
+}
+
+.summary-table td.value-negative { color: var(--danger); text-shadow: 0 0 8px rgba(255, 107, 107, 0.5); }
+.summary-table td.value-positive { color: var(--accent-strong); }
+
+.statistics-block {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+
+.statistics-block strong {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.statistics-block .stats-title {
+  font-family: var(--font-display);
+  color: var(--accent-strong);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.statistics-block .stats-description {
+  margin-top: 10px;
+  color: var(--text);
+  font-family: var(--font-display);
+}
+
+table.stats-weapons {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+table.stats-weapons th, table.stats-weapons td {
+  border: 1px solid var(--border-soft);
+  padding: 5px 7px;
+  text-align: left;
+}
+
+table.stats-weapons th:nth-child(n+2),
+table.stats-weapons td:nth-child(n+2) {
+  text-align: center;
+}
+
+table.stats-weapons th { color: var(--blue-strong); font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.04em; font-size: 10.5px; }
+
+/* ---------------- Misc ---------------- */
+* { scrollbar-color: var(--blue) var(--bg-panel-alt); }
+
+::-webkit-scrollbar { width: 14px; height: 14px; }
+::-webkit-scrollbar-track { background: var(--bg-panel-alt); }
+::-webkit-scrollbar-thumb {
+  background: var(--blue);
+  border-radius: 7px;
+  border: 3px solid var(--bg-panel-alt);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--blue-strong); }
+::-webkit-scrollbar-thumb:active { background: var(--amber); }
+::-webkit-scrollbar-corner { background: var(--bg-panel-alt); }
+
+/* Touch-device scroll indicator (iOS can't recolor its native scrollbar) - see initTouchScrollbars() in app.js */
+.touch-scrollbar-track {
+  position: sticky;
+  top: 0;
+  height: 0;
+  z-index: 6;
+  pointer-events: none;
+}
+/* Thumb bar itself is hidden - hard to grab reliably by touch and just added
+   visual noise once the up/down buttons were in place. Kept in the DOM (its
+   sizing logic in app.js is harmless dead weight) in case it's wanted back. */
+.touch-scrollbar-thumb { display: none; }
+
+.touch-scroll-btn {
+  position: absolute;
+  right: 2px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--blue);
+  background: var(--bg-panel-alt);
+  color: var(--blue-strong);
+  font-size: 11px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+  z-index: 7;
+}
+.touch-scroll-up { top: 0; }
+.touch-scroll-btn:active { background: var(--blue); color: var(--ink); }
+.touch-scroll-btn:disabled { opacity: 0.25; }
+
+::selection { background: var(--accent-dim); color: var(--accent-strong); }
+
+@media (prefers-reduced-motion: reduce) {
+  .tab-btn.active,
+  .vehicle-list li .dirty-dot,
+  .holo-ring,
+  .holo-core,
+  .logo-ring {
+    animation: none;
+  }
+}
