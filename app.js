@@ -29,23 +29,23 @@ const OPERATIONS_FEATURES = [
   { key: "Nav", label: "Navigation [+Navigation]", aiField: "aiNavLevel", crewField: "crewNavLevel", cpProp: "cpCostNav", mkProp: "mkNav", noteFn: () => "", advancedTrait: "Advanced Navigation" },
   { key: "Research", label: "Research [+Science]", aiField: "aiResearchLevel", crewField: "crewResearchLevel", cpProp: "cpCostResearch", mkProp: "mkResearch", noteFn: () => "", advancedTrait: "Advanced Research" },
   { key: "Security", label: "Security [+Warfare]", aiField: "aiSecurityLevel", crewField: "crewSecurityLevel", cpProp: "cpCostSecurity", mkProp: "mkSecurity", noteFn: () => "", advancedTrait: "Advanced Security" },
-  { key: "Sensors", label: "Sensors [+Science]", aiField: "aiSensorsLevel", crewField: "crewSensorsLevel", cpProp: "cpCostSensors", mkProp: "mkSensors", noteFn: (v) => "Bonus/Range: " + v.sb, advancedTrait: "Advanced Sensors" },
+  { key: "Sensors", label: "Sensors [+Science]", aiField: "aiSensorsLevel", crewField: "crewSensorsLevel", cpProp: "cpCostSensors", mkProp: "mkSensors", noteFn: (v) => "Bonus/Range: " + fmtG(v.sb), advancedTrait: "Advanced Sensors" },
 ];
 
 const PLATFORM_FEATURES = [
   { key: "Armor", label: "Armor & Shields", levelField: "levelArmor", bonusField: "bonusArmor", cpProp: "cpCostArmor", mkProp: "mkArmor", noteFn: () => "" },
-  { key: "BC", label: "Berthing Compartment", levelField: "levelBC", bonusField: "bonusBC", cpProp: "cpCostBC", mkProp: "mkBC", noteFn: (v) => v.totalPassengers + " Passengers" },
+  { key: "BC", label: "Berthing Compartment", levelField: "levelBC", bonusField: "bonusBC", cpProp: "cpCostBC", mkProp: "mkBC", noteFn: (v) => fmtG(v.totalPassengers) + " Passengers" },
   { key: "CH", label: "Cargo Hold", levelField: "levelCH", bonusField: "bonusCH", cpProp: "cpCostCH", mkProp: "mkCH", noteFn: (v) => fmtN0(v.totalCargoUnits) + " Cargo Units" },
-  { key: "DC", label: "Damage Control", levelField: "levelDC", bonusField: "bonusDC", cpProp: "cpCostDC", mkProp: "mkDC", noteFn: (v) => v.hpRepaired + " HP Repaired" },
-  { key: "GH", label: "Gravitic Harpoon", levelField: "levelGH", bonusField: "bonusGH", cpProp: "cpCostGH", mkProp: "mkGH", noteFn: (v) => "Range: " + v.mkGH },
-  { key: "HS", label: "Hangar Space", levelField: "levelHS", bonusField: "bonusHS", cpProp: "cpCostHS", mkProp: "mkHS", noteFn: (v) => v.hangarSpaceTons + " tons" },
-  { key: "Hpress", label: "Hydrostatic Pressure", levelField: "levelHpress", bonusField: "bonusHpress", cpProp: "cpCostHpress", mkProp: "mkHpress", noteFn: (v) => v.atms + " atms" },
-  { key: "OD", label: "Operating Duration", levelField: "levelOD", bonusField: "bonusOD", cpProp: "cpCostOD", mkProp: "mkOD", noteFn: (v) => v.od + " day" },
-  { key: "QT", label: "Quantum Telegraph (TL6+)", levelField: "levelQT", bonusField: "bonusQT", cpProp: "cpCostQT", mkProp: "mkQT", noteFn: (v) => v.qtRange + " ly" },
+  { key: "DC", label: "Damage Control", levelField: "levelDC", bonusField: "bonusDC", cpProp: "cpCostDC", mkProp: "mkDC", noteFn: (v) => fmtG(v.hpRepaired) + " HP Repaired" },
+  { key: "GH", label: "Gravitic Harpoon", levelField: "levelGH", bonusField: "bonusGH", cpProp: "cpCostGH", mkProp: "mkGH", noteFn: (v) => "Range: " + fmtG(v.mkGH) },
+  { key: "HS", label: "Hangar Space", levelField: "levelHS", bonusField: "bonusHS", cpProp: "cpCostHS", mkProp: "mkHS", noteFn: (v) => fmtG(v.hangarSpaceTons) + " tons" },
+  { key: "Hpress", label: "Hydrostatic Pressure", levelField: "levelHpress", bonusField: "bonusHpress", cpProp: "cpCostHpress", mkProp: "mkHpress", noteFn: (v) => fmtG(v.atms) + " atms" },
+  { key: "OD", label: "Operating Duration", levelField: "levelOD", bonusField: "bonusOD", cpProp: "cpCostOD", mkProp: "mkOD", noteFn: (v) => fmtG(v.od) + " day" },
+  { key: "QT", label: "Quantum Telegraph (TL6+)", levelField: "levelQT", bonusField: "bonusQT", cpProp: "cpCostQT", mkProp: "mkQT", noteFn: (v) => fmtG(v.qtRange) + " ly" },
   { key: "RP", label: "Reactor Power", levelField: "levelRP", bonusField: "bonusRP", cpProp: "cpCostRP", mkProp: "mkRP", noteFn: () => "" },
   { key: "Stealth", label: "Stealth", levelField: "levelStealth", bonusField: "bonusStealth", cpProp: "cpCostStealth", mkProp: "mkStealth", noteFn: () => "" },
   { key: "Thrust", label: "Thrust", levelField: "levelThrust", bonusField: "bonusThrust", cpProp: "cpCostThrust", mkProp: "mkThrust", noteFn: () => "" },
-  { key: "Warp", label: "Warp Speed (TL5+)", levelField: "levelWarp", bonusField: "bonusWarp", cpProp: "cpCostWarp", mkProp: "mkWarp", noteFn: (v) => v.warpSpeed + " LY/Day" },
+  { key: "Warp", label: "Warp Speed (TL5+)", levelField: "levelWarp", bonusField: "bonusWarp", cpProp: "cpCostWarp", mkProp: "mkWarp", noteFn: (v) => fmtG(v.warpSpeed) + " LY/Day" },
 ];
 
 const ENUM_SELECTS = [
@@ -193,7 +193,7 @@ function renderTraitsRepository(vehicle) {
     tr.innerHTML =
       `<td>${escHtml(row.traitName)}${row.owned ? " (owned)" : ""}</td>` +
       `<td class="feature-notes">${escHtml(row.prerequisite)}</td>` +
-      `<td class="readonly-cell">${row.cost}</td>`;
+      `<td class="readonly-cell">${fmtG(row.cost)}</td>`;
     tbody.appendChild(tr);
   }
 }
@@ -225,7 +225,7 @@ function renderSelectedTraits(vehicle) {
     tr.innerHTML =
       `<td>${escHtml(nameLabel)}</td>` +
       `<td class="feature-notes">${escHtml(row.prerequisite)}</td>` +
-      `<td class="readonly-cell">${row.cost}</td>`;
+      `<td class="readonly-cell">${fmtG(row.cost)}</td>`;
     tbody.appendChild(tr);
   }
 }
@@ -254,7 +254,7 @@ function renderBoutiqueRepository(vehicle) {
     tr.dataset.key = row.boutiqueServiceName;
     tr.innerHTML =
       `<td>${escHtml(row.boutiqueServiceName)}${row.owned ? " (owned)" : ""}</td>` +
-      `<td class="readonly-cell">${row.cost}</td>`;
+      `<td class="readonly-cell">${fmtG(row.cost)}</td>`;
     tbody.appendChild(tr);
   }
 }
@@ -282,7 +282,7 @@ function renderSelectedBoutique(vehicle) {
     tr.dataset.key = row.boutiqueServiceName;
     tr.innerHTML =
       `<td>${escHtml(row.boutiqueServiceName)}</td>` +
-      `<td class="readonly-cell">${row.cost}</td>`;
+      `<td class="readonly-cell">${fmtG(row.cost)}</td>`;
     tbody.appendChild(tr);
   }
 }
@@ -1041,22 +1041,22 @@ function updateComputedUI(vehicle) {
 
   for (const def of OPERATIONS_FEATURES) {
     const hasAdvantage = vehicle.getTraitSelectedLevel(def.advancedTrait) > 0;
-    el(`op-${def.key}-mk`).textContent = dashIfZero(vehicle[def.mkProp]) + (hasAdvantage ? "A" : "");
-    el(`op-${def.key}-cp`).textContent = dashIfZero(vehicle[def.cpProp]);
+    el(`op-${def.key}-mk`).textContent = dashIfZero(fmtG(vehicle[def.mkProp])) + (hasAdvantage ? "A" : "");
+    el(`op-${def.key}-cp`).textContent = dashIfZero(fmtG(vehicle[def.cpProp]));
     el(`op-${def.key}-tons`).textContent = dashIfZero(fmtN0(vehicle.getFeatureTons(vehicle[def.cpProp])));
     el(`op-${def.key}-note`).textContent = def.noteFn(vehicle);
   }
   for (const def of PLATFORM_FEATURES) {
-    el(`pl-${def.key}-mk`).textContent = dashIfZero(vehicle[def.mkProp]);
-    el(`pl-${def.key}-cp`).textContent = dashIfZero(vehicle[def.cpProp]);
+    el(`pl-${def.key}-mk`).textContent = dashIfZero(fmtG(vehicle[def.mkProp]));
+    el(`pl-${def.key}-cp`).textContent = dashIfZero(fmtG(vehicle[def.cpProp]));
     el(`pl-${def.key}-tons`).textContent = dashIfZero(fmtN0(vehicle.getFeatureTons(vehicle[def.cpProp])));
     el(`pl-${def.key}-note`).textContent = def.noteFn(vehicle);
   }
 
-  el("wCapital").textContent = `AB ${vehicle.capitalAttackBonus} | Range ${vehicle.capitalRange} | Damage ${vehicle.capitalDamage}`;
-  el("wStandard").textContent = `AB ${vehicle.standardAttackBonus} | Range ${vehicle.standardRange} | Damage ${vehicle.standardDamage}`;
-  el("wMissile").textContent = `AB ${vehicle.missileAttackBonus} | Range ${vehicle.missileRange} | Damage ${vehicle.missileDamage}`;
-  el("wSlug").textContent = `AB ${vehicle.slugAttackBonus} | Range ${vehicle.slugRange} | Damage ${vehicle.slugDamage}`;
+  el("wCapital").textContent = `AB ${fmtG(vehicle.capitalAttackBonus)} | Range ${fmtG(vehicle.capitalRange)} | Damage ${fmtG(vehicle.capitalDamage)}`;
+  el("wStandard").textContent = `AB ${fmtG(vehicle.standardAttackBonus)} | Range ${fmtG(vehicle.standardRange)} | Damage ${fmtG(vehicle.standardDamage)}`;
+  el("wMissile").textContent = `AB ${fmtG(vehicle.missileAttackBonus)} | Range ${fmtG(vehicle.missileRange)} | Damage ${fmtG(vehicle.missileDamage)}`;
+  el("wSlug").textContent = `AB ${fmtG(vehicle.slugAttackBonus)} | Range ${fmtG(vehicle.slugRange)} | Damage ${fmtG(vehicle.slugDamage)}`;
 
   const weaponsCP = vehicle.cpCostWeaponCapital + vehicle.cpCostWeaponStandard + vehicle.cpCostWeaponMissiles + vehicle.cpCostWeaponSlug;
   const totalFeatureTons =
@@ -1069,29 +1069,29 @@ function updateComputedUI(vehicle) {
   const traitsCP = vehicle.sumSelectedTraitsBaseCP();
   const boutiqueCP = vehicle.sumSelectedBoutiqueServicesBaseCP();
 
-  el("sMaxCP").textContent = dashIfZero(vehicle.cpMax);
+  el("sMaxCP").textContent = dashIfZero(fmtG(vehicle.cpMax));
   el("sMaxTons").textContent = dashIfZero(fmtN0(vehicle.getFeatureTons(vehicle.cpMax)));
-  el("sUnspentCP").textContent = dashIfZero(vehicle.unspentCP);
+  el("sUnspentCP").textContent = dashIfZero(fmtG(vehicle.unspentCP));
   el("sUnspentTons").textContent = dashIfZero(fmtN0(vehicle.getFeatureTons(vehicle.unspentCP)));
   el("sUnspentCP").classList.toggle("value-negative", vehicle.unspentCP < 0);
   el("sUnspentCP").classList.toggle("value-positive", vehicle.unspentCP > 0);
-  el("sFeaturesCP").textContent = dashIfZero(vehicle.cpCostTotalFeatures);
-  el("sWeaponsCP").textContent = dashIfZero(weaponsCP);
-  el("sTraitsCP").textContent = dashIfZero(traitsCP);
+  el("sFeaturesCP").textContent = dashIfZero(fmtG(vehicle.cpCostTotalFeatures));
+  el("sWeaponsCP").textContent = dashIfZero(fmtG(weaponsCP));
+  el("sTraitsCP").textContent = dashIfZero(fmtG(traitsCP));
   el("sTraitsTons").textContent = dashIfZero(fmtN0(vehicle.getFeatureTons(traitsCP)));
-  el("sBoutiqueCP").textContent = dashIfZero(boutiqueCP);
+  el("sBoutiqueCP").textContent = dashIfZero(fmtG(boutiqueCP));
   el("sBoutiqueTons").textContent = dashIfZero(fmtN0(vehicle.getFeatureTons(boutiqueCP)));
-  el("sEnvironmentalCP").textContent = dashIfZero(vehicle.cpCostEnvironmental);
+  el("sEnvironmentalCP").textContent = dashIfZero(fmtG(vehicle.cpCostEnvironmental));
   el("sEnvironmentalTons").textContent = dashIfZero(fmtN0(vehicle.getFeatureTons(vehicle.cpCostEnvironmental)));
-  el("sInterfaceOptionCP").textContent = dashIfZero(vehicle.cpCostInterfaceOptions);
+  el("sInterfaceOptionCP").textContent = dashIfZero(fmtG(vehicle.cpCostInterfaceOptions));
   el("sInterfaceOptionTons").textContent = dashIfZero(fmtN0(vehicle.getFeatureTons(vehicle.cpCostInterfaceOptions)));
   el("sTotalFeatureTons").textContent = dashIfZero(fmtN0(totalFeatureTons));
   el("sTotalWeaponTons").textContent = dashIfZero(fmtN0(totalWeaponTons));
   el("sFrameStrengthLabel").textContent = `Frame Strength (${vehicle.frameStrengthSelected})`;
-  el("sFrameStrengthCP").textContent = dashIfZero(vehicle.cpCostFrameStrength);
+  el("sFrameStrengthCP").textContent = dashIfZero(fmtG(vehicle.cpCostFrameStrength));
   el("sFrameStrengthTons").textContent = dashIfZero(fmtN0(vehicle.getFeatureTons(vehicle.cpCostFrameStrength)));
   el("sCompartmentalizationLabel").textContent = `Compartmentalization (${vehicle.compartmentalizationSelected})`;
-  el("sCompartmentalizationCP").textContent = dashIfZero(vehicle.cpCostCompartmentalization);
+  el("sCompartmentalizationCP").textContent = dashIfZero(fmtG(vehicle.cpCostCompartmentalization));
   el("sCompartmentalizationTons").textContent = dashIfZero(fmtN0(vehicle.getFeatureTons(vehicle.cpCostCompartmentalization)));
 
   el("statisticsBlock").innerHTML = vehicle.statisticsHTML;

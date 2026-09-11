@@ -41,6 +41,18 @@ function fmtN0(value) { return fmtN(value, 0); }
 function fmtN1(value) { return fmtN(value, 1); }
 function fmtN2(value) { return fmtN(value, 2); }
 
+// Thousands-grouped display for numbers that don't have a dedicated
+// decimal-place policy (unlike buildTons/monero, which pick N0/N1/N2 based
+// on magnitude) - adds "," separators at >=1000 without forcing away
+// whatever decimals the value naturally has (e.g. a fractional OD).
+function fmtG(value) { return Number(value).toLocaleString("en-US"); }
+
+// Private Use Area sentinels marking the struck-through Monero "M" in
+// statisticsHTML - see that getter for why a placeholder is needed instead
+// of writing the <span> directly.
+const MONERO_STRIKE_OPEN = "\uE000";
+const MONERO_STRIKE_CLOSE = "\uE001";
+
 // "FusionBlaster" -> "Fusion Blaster", "BRRRPGun" -> "BRRRP Gun" (keeps acronym runs
 // intact). Enum values like weapon system types are stored PascalCase with no spaces.
 function splitCamelCase(str) {
@@ -771,78 +783,78 @@ class VehicleData {
 
     let crewLine;
     if (this.getTraitSelectedLevel("Extreme Automation") > 0) {
-      crewLine = `Crew: Total ${this.totalCrew} / ${Math.ceil(Math.sqrt(this.totalCrew))}. `;
+      crewLine = `Crew: Total ${fmtG(this.totalCrew)} / ${fmtG(Math.ceil(Math.sqrt(this.totalCrew)))}. `;
     } else {
-      crewLine = `Crew: Total ${this.totalCrew}. `;
+      crewLine = `Crew: Total ${fmtG(this.totalCrew)}. `;
     }
-    const crewParts = [`Command ${this.commandCrew}`];
-    if (this.activeCrew > 0) crewParts.push(`Active ${this.activeCrew}`);
-    if (this.serviceCrew > 0) crewParts.push(`Service ${this.serviceCrew}`);
+    const crewParts = [`Command ${fmtG(this.commandCrew)}`];
+    if (this.activeCrew > 0) crewParts.push(`Active ${fmtG(this.activeCrew)}`);
+    if (this.serviceCrew > 0) crewParts.push(`Service ${fmtG(this.serviceCrew)}`);
     lines.push(crewLine + crewParts.join(", ") + ".");
 
     const opParts = [];
-    if (this.mkControl > 0) opParts.push(`Control-${this.mkControl}`);
-    if (this.mkEW > 0) opParts.push(`EW-${this.mkEW}`);
-    if (this.mkGunner > 0) opParts.push(`Gunner-${this.mkGunner}`);
-    if (this.mkNav > 0) opParts.push(`Nav-${this.mkNav}`);
-    if (this.mkResearch > 0) opParts.push(`Research-${this.mkResearch}`);
-    if (this.mkSecurity > 0) opParts.push(`Security-${this.mkSecurity}`);
-    if (this.mkSensors > 0) opParts.push(`Sensors-${this.mkSensors}`);
+    if (this.mkControl > 0) opParts.push(`Control-${fmtG(this.mkControl)}`);
+    if (this.mkEW > 0) opParts.push(`EW-${fmtG(this.mkEW)}`);
+    if (this.mkGunner > 0) opParts.push(`Gunner-${fmtG(this.mkGunner)}`);
+    if (this.mkNav > 0) opParts.push(`Nav-${fmtG(this.mkNav)}`);
+    if (this.mkResearch > 0) opParts.push(`Research-${fmtG(this.mkResearch)}`);
+    if (this.mkSecurity > 0) opParts.push(`Security-${fmtG(this.mkSecurity)}`);
+    if (this.mkSensors > 0) opParts.push(`Sensors-${fmtG(this.mkSensors)}`);
     lines.push("Operations: " + opParts.join(", ") + ".");
 
     const platParts = [];
-    if (this.mkArmor > 0) platParts.push(`Armor-${this.mkArmor}`);
-    if (this.mkBC > 0) platParts.push(`BC-${this.mkBC}`);
-    if (this.mkCH > 0) platParts.push(`CH-${this.mkCH}`);
-    if (this.mkDC > 0) platParts.push(`DC-${this.mkDC}`);
-    if (this.mkGH > 0) platParts.push(`GH-${this.mkGH}`);
-    if (this.mkHS > 0) platParts.push(`HS-${this.mkHS}`);
-    if (this.mkHpress > 0) platParts.push(`Hpress-${this.mkHpress}`);
-    if (this.mkOD > 0) platParts.push(`OD-${this.mkOD}`);
-    if (this.mkQT > 0) platParts.push(`QT-${this.mkQT}`);
-    if (this.mkRP > 0) platParts.push(`RP-${this.mkRP}`);
-    if (this.mkStealth > 0) platParts.push(`Stealth-${this.mkStealth}`);
-    if (this.mkThrust > 0) platParts.push(`Thrust-${this.mkThrust}`);
-    if (this.mkWarp > 0) platParts.push(`Warp-${this.mkWarp}`);
+    if (this.mkArmor > 0) platParts.push(`Armor-${fmtG(this.mkArmor)}`);
+    if (this.mkBC > 0) platParts.push(`BC-${fmtG(this.mkBC)}`);
+    if (this.mkCH > 0) platParts.push(`CH-${fmtG(this.mkCH)}`);
+    if (this.mkDC > 0) platParts.push(`DC-${fmtG(this.mkDC)}`);
+    if (this.mkGH > 0) platParts.push(`GH-${fmtG(this.mkGH)}`);
+    if (this.mkHS > 0) platParts.push(`HS-${fmtG(this.mkHS)}`);
+    if (this.mkHpress > 0) platParts.push(`Hpress-${fmtG(this.mkHpress)}`);
+    if (this.mkOD > 0) platParts.push(`OD-${fmtG(this.mkOD)}`);
+    if (this.mkQT > 0) platParts.push(`QT-${fmtG(this.mkQT)}`);
+    if (this.mkRP > 0) platParts.push(`RP-${fmtG(this.mkRP)}`);
+    if (this.mkStealth > 0) platParts.push(`Stealth-${fmtG(this.mkStealth)}`);
+    if (this.mkThrust > 0) platParts.push(`Thrust-${fmtG(this.mkThrust)}`);
+    if (this.mkWarp > 0) platParts.push(`Warp-${fmtG(this.mkWarp)}`);
     lines.push("Platform: " + platParts.join(", ") + ".");
 
     const structParts = [];
-    if (this.frameStrengthSelected !== "Standard") structParts.push(`${this.frameStrengthSelected} Frame (${this.cpCostFrameStrength})`);
-    if (this.compartmentalizationSelected !== "Standard") structParts.push(`${this.compartmentalizationSelected} Compartmentalization (${this.cpCostCompartmentalization})`);
+    if (this.frameStrengthSelected !== "Standard") structParts.push(`${this.frameStrengthSelected} Frame (${fmtG(this.cpCostFrameStrength)})`);
+    if (this.compartmentalizationSelected !== "Standard") structParts.push(`${this.compartmentalizationSelected} Compartmentalization (${fmtG(this.cpCostCompartmentalization)})`);
     if (structParts.length > 0) lines.push("Structure: " + structParts.join(", ") + ".");
 
     if (this.selectedTraits.length > 0) {
       const traitParts = this.selectedTraits.map((t) =>
         t.selectedLevel > 1
-          ? `${t.traitName}-${t.selectedLevel} (${t.costTrait(this)})`
-          : `${t.traitName} (${t.costTrait(this)})`
+          ? `${t.traitName}-${t.selectedLevel} (${fmtG(t.costTrait(this))})`
+          : `${t.traitName} (${fmtG(t.costTrait(this))})`
       );
       lines.push("Traits: " + traitParts.join(", ") + ".");
     }
 
     if (this.selectedBoutiqueServices.length > 0) {
-      const bsParts = this.selectedBoutiqueServices.map((b) => `${b.boutiqueServiceName} (${b.costBoutiqueService(this)})`);
+      const bsParts = this.selectedBoutiqueServices.map((b) => `${b.boutiqueServiceName} (${fmtG(b.costBoutiqueService(this))})`);
       lines.push("Boutique Services: " + bsParts.join(", ") + ".");
     }
 
     const combatParts = [
-      `DR ${this.dr}`,
-      `HP ${this.hp} (${Math.ceil(this.hp / 50)}/${Math.ceil(this.hp / 100)})`,
-      `Deflect ${this.deflect}`,
-      `Rx ${Math.floor(this.tier / 2.0)}`,
+      `DR ${fmtG(this.dr)}`,
+      `HP ${fmtG(this.hp)} (${fmtG(Math.ceil(this.hp / 50))}/${fmtG(Math.ceil(this.hp / 100))})`,
+      `Deflect ${fmtG(this.deflect)}`,
+      `Rx ${fmtG(Math.floor(this.tier / 2.0))}`,
     ];
     lines.push("Combat: " + combatParts.join(", ") + ".");
 
     // Weapons table
     const weaponRows = [];
     if (this.capitalMk > 0 && this.capitalWeaponSystemType !== "None")
-      weaponRows.push([`Capital: ${splitCamelCase(this.capitalWeaponSystemType)}`, this.capitalMk, this.capitalAttackBonus, this.capitalRange, this.capitalDamage]);
+      weaponRows.push([`Capital: ${splitCamelCase(this.capitalWeaponSystemType)}`, fmtG(this.capitalMk), fmtG(this.capitalAttackBonus), fmtG(this.capitalRange), fmtG(this.capitalDamage)]);
     if (this.standardMk > 0 && this.standardWeaponSystemType !== "None")
-      weaponRows.push([`Standard: ${splitCamelCase(this.standardWeaponSystemType)}`, this.standardMk, this.standardAttackBonus, this.standardRange, this.standardDamage]);
+      weaponRows.push([`Standard: ${splitCamelCase(this.standardWeaponSystemType)}`, fmtG(this.standardMk), fmtG(this.standardAttackBonus), fmtG(this.standardRange), fmtG(this.standardDamage)]);
     if (this.missileMk > 0 && this.missileWeaponSystemType !== "None")
-      weaponRows.push([`Missile: ${splitCamelCase(this.missileWeaponSystemType)}`, this.missileMk, this.missileAttackBonus, this.missileRange, this.missileDamage]);
+      weaponRows.push([`Missile: ${splitCamelCase(this.missileWeaponSystemType)}`, fmtG(this.missileMk), fmtG(this.missileAttackBonus), fmtG(this.missileRange), fmtG(this.missileDamage)]);
     if (this.slugMk > 0 && this.slugThrowerWeaponSystemType !== "None")
-      weaponRows.push([`Slug Thrower: ${splitCamelCase(this.slugThrowerWeaponSystemType)}`, this.slugMk, this.slugAttackBonus, this.slugRange, this.slugDamage]);
+      weaponRows.push([`Slug Thrower: ${splitCamelCase(this.slugThrowerWeaponSystemType)}`, fmtG(this.slugMk), fmtG(this.slugAttackBonus), fmtG(this.slugRange), fmtG(this.slugDamage)]);
 
     let weaponsTableHTML = "";
     if (weaponRows.length > 0) {
@@ -856,48 +868,52 @@ class VehicleData {
     else if (this.buildTons >= 10) statParts.push(fmtN1(this.buildTons) + "-ton");
     else statParts.push(fmtN2(this.buildTons) + "-ton");
 
-    statParts.push(`CP ${this.cpSpent}`);
+    statParts.push(`CP ${fmtG(this.cpSpent)}`);
 
     const monero = this.totalMonero;
-    if (monero >= 1000) statParts.push("M" + fmtN1(monero / 1000) + "B");
-    else if (monero >= 100) statParts.push("M" + fmtN0(monero) + "M");
-    else if (monero >= 10) statParts.push("M" + fmtN2(monero) + "M");
-    else if (monero >= 1) statParts.push("M" + fmtN1(monero) + "M");
-    else statParts.push("M" + fmtN0(monero * 1000) + "k");
+    // The leading "M" is the Monero currency mark, always rendered struck
+    // through - see MONERO_STRIKE_OPEN/CLOSE below for how that survives
+    // the HTML-escaping this string goes through further down.
+    const struckM = MONERO_STRIKE_OPEN + "M" + MONERO_STRIKE_CLOSE;
+    if (monero >= 1000) statParts.push(struckM + fmtN1(monero / 1000) + "B");
+    else if (monero >= 100) statParts.push(struckM + fmtN0(monero) + "M");
+    else if (monero >= 10) statParts.push(struckM + fmtN2(monero) + "M");
+    else if (monero >= 1) statParts.push(struckM + fmtN1(monero) + "M");
+    else statParts.push(struckM + fmtN0(monero * 1000) + "k");
 
-    statParts.push(`SB ${this.sb}`);
+    statParts.push(`SB ${fmtG(this.sb)}`);
 
     if (this.transportType === "DayTrip") {
-      statParts.push(this.mkOD === 0 ? `OD ${this.od * 12} Hours` : `OD ${this.od} Days`);
+      statParts.push(this.mkOD === 0 ? `OD ${fmtG(this.od * 12)} Hours` : `OD ${fmtG(this.od)} Days`);
     } else {
-      statParts.push(this.od > 1 ? `OD ${this.od} Days` : `OD ${this.od} Day`);
+      statParts.push(this.od > 1 ? `OD ${fmtG(this.od)} Days` : `OD ${fmtG(this.od)} Day`);
     }
 
-    if (this.totalPassengers > 0) statParts.push(`${this.transportType} ${this.passengerClass} Passengers ${this.totalPassengers}`);
+    if (this.totalPassengers > 0) statParts.push(`${this.transportType} ${this.passengerClass} Passengers ${fmtG(this.totalPassengers)}`);
     if (this.totalCargoUnits > 0) statParts.push(`Cargo Units ${fmtN0(this.totalCargoUnits)}`);
     if (this.hangarSpaceTons > 0) statParts.push(`Hangar Volume ${fmtN0(this.hangarSpaceTons)} tons`);
-    if (this.ghp > 0) statParts.push(`GHP ${this.ghp}`);
-    if (this.qtRange > 0) statParts.push(`QT ${this.qtRange} LY`);
+    if (this.ghp > 0) statParts.push(`GHP ${fmtG(this.ghp)}`);
+    if (this.qtRange > 0) statParts.push(`QT ${fmtG(this.qtRange)} LY`);
 
     lines.push("Statistics: " + statParts.join(", ") + ".");
 
     let interfaceLine = "Interface: " + this.environmentalInterfacePrimary;
-    if (this.environmentalInterfaceSecondary !== "None") interfaceLine += `, ${this.environmentalInterfaceSecondary} (${this.tier})`;
-    if (this.environmentalInterfaceTertiary !== "None") interfaceLine += `, ${this.environmentalInterfaceTertiary} (${this.tier})`;
+    if (this.environmentalInterfaceSecondary !== "None") interfaceLine += `, ${this.environmentalInterfaceSecondary} (${fmtG(this.tier)})`;
+    if (this.environmentalInterfaceTertiary !== "None") interfaceLine += `, ${this.environmentalInterfaceTertiary} (${fmtG(this.tier)})`;
     interfaceLine += ". ";
 
     const ifaceParts = [];
-    if (this.warpSpeed > 0) ifaceParts.push(`Warp-${this.warpSpeed}`);
-    if (this.accelG > 0) ifaceParts.push(`${this.accelG}-G`);
-    if (this.aSpeed > 0) ifaceParts.push(`aSpeed ${this.aSpeed} mph`);
-    if (this.gSpeed > 0) ifaceParts.push(`gSpeed ${this.gSpeed} mph`);
-    if (this.oSpeed > 0) ifaceParts.push(`oSpeed ${this.oSpeed} mph`);
-    if (this.wSpeed > 0) ifaceParts.push(`wSpeed ${this.wSpeed} mph`);
-    if (this.uSpeed > 0) ifaceParts.push(`uSpeed ${this.uSpeed} mph`);
-    if (this.mkHpress > 0) ifaceParts.push(`Atms ${this.atms}`);
-    if (this.interfaceOption === "Aquaform") ifaceParts.push(`Aquaform (${this.cpCostInterfaceOptions})`);
-    if (this.interfaceOption === "TailLander") ifaceParts.push(`Tail Lander (${this.cpCostInterfaceOptions})`);
-    if (this.interfaceOption === "Voidbound") ifaceParts.push(`Void-Bound (${this.cpCostInterfaceOptions})`);
+    if (this.warpSpeed > 0) ifaceParts.push(`Warp-${fmtG(this.warpSpeed)}`);
+    if (this.accelG > 0) ifaceParts.push(`${fmtG(this.accelG)}-G`);
+    if (this.aSpeed > 0) ifaceParts.push(`aSpeed ${fmtG(this.aSpeed)} mph`);
+    if (this.gSpeed > 0) ifaceParts.push(`gSpeed ${fmtG(this.gSpeed)} mph`);
+    if (this.oSpeed > 0) ifaceParts.push(`oSpeed ${fmtG(this.oSpeed)} mph`);
+    if (this.wSpeed > 0) ifaceParts.push(`wSpeed ${fmtG(this.wSpeed)} mph`);
+    if (this.uSpeed > 0) ifaceParts.push(`uSpeed ${fmtG(this.uSpeed)} mph`);
+    if (this.mkHpress > 0) ifaceParts.push(`Atms ${fmtG(this.atms)}`);
+    if (this.interfaceOption === "Aquaform") ifaceParts.push(`Aquaform (${fmtG(this.cpCostInterfaceOptions)})`);
+    if (this.interfaceOption === "TailLander") ifaceParts.push(`Tail Lander (${fmtG(this.cpCostInterfaceOptions)})`);
+    if (this.interfaceOption === "Voidbound") ifaceParts.push(`Void-Bound (${fmtG(this.cpCostInterfaceOptions)})`);
 
     interfaceLine += ifaceParts.join(", ") + ".";
     lines.push(interfaceLine);
@@ -913,7 +929,16 @@ class VehicleData {
       weaponsTableHTML +
       (this.vehicleDescription ? `<div class="stats-description">${esc(this.vehicleDescription).replace(/\n/g, "<br>")}</div>` : "");
 
-    return bodyHTML;
+    // Swap the sentinel markers back into real markup now that all the
+    // esc() calls above are done - esc() only touches & < >, so these
+    // Private Use Area characters pass through untouched. Uses the
+    // semantic <s> tag (not a CSS class) so the strikethrough survives
+    // copy/paste into apps like Word, the same way <strong> above does -
+    // a class-based style gets dropped on paste since the destination has
+    // no idea what "monero-mark" means, but every renderer knows <s>.
+    return bodyHTML
+      .split(MONERO_STRIKE_OPEN).join("<s>")
+      .split(MONERO_STRIKE_CLOSE).join("</s>");
   }
 
   // Serialization
